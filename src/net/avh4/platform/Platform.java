@@ -1,26 +1,28 @@
 
 package net.avh4.platform;
 
-import java.util.Date;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import java.util.GregorianCalendar;
 
 public class Platform implements Runnable {
 
-    private final Date mockDate;
+    private final TimeProvider time;
 
     private final UI ui;
 
-    protected Platform(Date time, UI ui) {
-        mockDate = time;
+    @Inject
+    protected Platform(TimeProvider time, UI ui) {
+        this.time = time;
         this.ui = ui;
     }
 
-    public Platform(UI ui) {
-        this(null, ui);
-    }
-
     public static void main(String[] args) {
-        new Platform(new SwingUI()).run();
+        Injector injector = Guice.createInjector(new RealModule());
+        Platform p = injector.getInstance(Platform.class);
+        p.run();
     }
 
     @Override
@@ -37,7 +39,7 @@ public class Platform implements Runnable {
 
     private String createGmailLink(int year_offset) {
         GregorianCalendar now = new GregorianCalendar();
-        now.setTime(getDate());
+        now.setTime(time.getDate());
         int end_date = now.get(GregorianCalendar.DAY_OF_MONTH);
         now.add(GregorianCalendar.DATE, -1);
         int start_date = now.get(GregorianCalendar.DAY_OF_MONTH);
@@ -45,13 +47,6 @@ public class Platform implements Runnable {
         return "https://mail.google.com/mail/?shva=1#search/after%3A" + year + "%2F3%2F"
                 + start_date + "+before%3A" + year + "%2F3%2F" + end_date
                 + "+label%3AInbox+OR+label%3Aotherinbox\n";
-    }
-
-    private Date getDate() {
-        if (mockDate != null) {
-            return mockDate;
-        }
-        return new Date();
     }
 
 }
