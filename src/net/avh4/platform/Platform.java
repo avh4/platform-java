@@ -32,7 +32,7 @@ public class Platform implements Runnable {
         }
     }
 
-    public String getEmailReviewUrls() {
+    private String getEmailReviewUrls() {
         return createGmailLink(0) + createGmailLink(-1) + createGmailLink(-2) + createGmailLink(-3)
                 + createGmailLink(-4);
     }
