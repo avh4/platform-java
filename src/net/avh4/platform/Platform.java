@@ -29,21 +29,20 @@ public class Platform {
     private static Date mockDate = null;
 
     public static String getEmailReviewUrls() {
+        return createGmailLink(0) + createGmailLink(-1) + createGmailLink(-2) + createGmailLink(-3)
+                + createGmailLink(-4);
+    }
+
+    private static String createGmailLink(int year_offset) {
         GregorianCalendar now = new GregorianCalendar();
         now.setTime(getDate());
         int end_date = now.get(GregorianCalendar.DAY_OF_MONTH);
         now.add(GregorianCalendar.DATE, -1);
         int start_date = now.get(GregorianCalendar.DAY_OF_MONTH);
-        return "https://mail.google.com/mail/?shva=1#search/after%3A2010%2F3%2F" + start_date
-                + "+before%3A2010%2F3%2F" + end_date + "+label%3AInbox+OR+label%3Aotherinbox\n"
-                + "https://mail.google.com/mail/?shva=1#search/after%3A2009%2F3%2F" + start_date
-                + "+before%3A2009%2F3%2F" + end_date + "+label%3AInbox+OR+label%3Aotherinbox\n"
-                + "https://mail.google.com/mail/?shva=1#search/after%3A2008%2F3%2F" + start_date
-                + "+before%3A2008%2F3%2F" + end_date + "+label%3AInbox+OR+label%3Aotherinbox\n"
-                + "https://mail.google.com/mail/?shva=1#search/after%3A2007%2F3%2F" + start_date
-                + "+before%3A2007%2F3%2F" + end_date + "+label%3AInbox+OR+label%3Aotherinbox\n"
-                + "https://mail.google.com/mail/?shva=1#search/after%3A2006%2F3%2F" + start_date
-                + "+before%3A2006%2F3%2F" + end_date + "+label%3AInbox+OR+label%3Aotherinbox\n";
+        final int year = 2010 + year_offset;
+        return "https://mail.google.com/mail/?shva=1#search/after%3A" + year + "%2F3%2F"
+                + start_date + "+before%3A" + year + "%2F3%2F" + end_date
+                + "+label%3AInbox+OR+label%3Aotherinbox\n";
     }
 
     private static Date getDate() {
