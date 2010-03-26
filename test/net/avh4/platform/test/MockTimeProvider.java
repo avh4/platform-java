@@ -1,5 +1,7 @@
 
-package net.avh4.platform;
+package net.avh4.platform.test;
+
+import net.avh4.platform.TimeProvider;
 
 import java.util.Date;
 import java.util.GregorianCalendar;

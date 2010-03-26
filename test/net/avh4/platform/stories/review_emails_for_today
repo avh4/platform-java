@@ -1,0 +1,9 @@
+Scenario: March 25th
+	Given today is 2010-03-25
+	When I run Platform
+	Then I should see emails for 03-24 from 2006 to 2010
+
+Scenario: March 26th
+	Given today is 2010-03-26
+	When I run Platform
+	Then I should see emails for 03-25 from 2006 to 2010

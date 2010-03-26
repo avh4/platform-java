@@ -1,15 +1,22 @@
 
-package net.avh4.platform;
+package net.avh4.platform.steps;
 
 import static org.mockito.Mockito.verify;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import org.junit.Before;
-import org.junit.Test;
+import net.avh4.platform.Platform;
+import net.avh4.platform.UI;
+import net.avh4.platform.test.TestingModule;
 
-public class EmailReviewTest {
+import org.jbehave.scenario.annotations.BeforeScenario;
+import org.jbehave.scenario.annotations.Given;
+import org.jbehave.scenario.annotations.Then;
+import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.steps.Steps;
+
+public class ReviewEmailsForTodaySteps extends Steps {
 
     private Platform p;
 
@@ -17,7 +24,7 @@ public class EmailReviewTest {
 
     private UI ui;
 
-    @Before
+    @BeforeScenario
     public void setUp() {
         module = new TestingModule();
         Injector injector = Guice.createInjector(module);
@@ -25,11 +32,18 @@ public class EmailReviewTest {
         ui = module.getUi();
     }
 
-    @Test
-    public void seeEmailsForToday() {
-        module.setMockDate(2010, 3, 25);
+    @When("I run Platform")
+    public void runPlatform() {
         p.run();
+    }
 
+    @Given("today is 2010-03-$date")
+    public void setMockDate(int date) {
+        module.setMockDate(2010, 3, date);
+    }
+
+    @Then("I should see emails for 03-24 from 2006 to 2010")
+    public void shouldSeeEmailsInBrowserForMarch24() {
         final String url1 = "https://mail.google.com/mail/?shva=1#search/after%3A2010%2F3%2F24+before%3A2010%2F3%2F25+label%3AInbox+OR+label%3Aotherinbox";
         final String url2 = "https://mail.google.com/mail/?shva=1#search/after%3A2009%2F3%2F24+before%3A2009%2F3%2F25+label%3AInbox+OR+label%3Aotherinbox";
         final String url3 = "https://mail.google.com/mail/?shva=1#search/after%3A2008%2F3%2F24+before%3A2008%2F3%2F25+label%3AInbox+OR+label%3Aotherinbox";
@@ -42,11 +56,8 @@ public class EmailReviewTest {
         verify(ui).browseUrl(url5);
     }
 
-    @Test
-    public void seeEmailsForToday2() {
-        module.setMockDate(2010, 3, 26);
-        p.run();
-
+    @Then("I should see emails for 03-25 from 2006 to 2010")
+    public void shouldSeeEmailsInBrowserForMarch25() {
         final String url1 = "https://mail.google.com/mail/?shva=1#search/after%3A2010%2F3%2F25+before%3A2010%2F3%2F26+label%3AInbox+OR+label%3Aotherinbox";
         final String url2 = "https://mail.google.com/mail/?shva=1#search/after%3A2009%2F3%2F25+before%3A2009%2F3%2F26+label%3AInbox+OR+label%3Aotherinbox";
         final String url3 = "https://mail.google.com/mail/?shva=1#search/after%3A2008%2F3%2F25+before%3A2008%2F3%2F26+label%3AInbox+OR+label%3Aotherinbox";

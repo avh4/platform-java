@@ -1,9 +1,12 @@
 
-package net.avh4.platform;
+package net.avh4.platform.test;
 
 import static org.mockito.Mockito.mock;
 
 import com.google.inject.AbstractModule;
+
+import net.avh4.platform.TimeProvider;
+import net.avh4.platform.UI;
 
 public class TestingModule extends AbstractModule {
 
