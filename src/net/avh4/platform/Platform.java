@@ -1,10 +1,6 @@
 
 package net.avh4.platform;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -12,32 +8,25 @@ public class Platform implements Runnable {
 
     private final Date mockDate;
 
-    protected Platform(Date time) {
+    private final UI ui;
+
+    protected Platform(Date time, UI ui) {
         mockDate = time;
+        this.ui = ui;
     }
 
-    public Platform() {
-        this(null);
+    public Platform(UI ui) {
+        this(null, ui);
     }
 
     public static void main(String[] args) {
-        new Platform().run();
+        new Platform(new SwingUI()).run();
     }
 
     @Override
     public void run() {
         for (String url : getEmailReviewUrls().split("\n")) {
-            browseUrl(url);
-        }
-    }
-
-    private static void browseUrl(final String url) {
-        try {
-            Desktop.getDesktop().browse(new URI(url));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            ui.browseUrl(url);
         }
     }
 
