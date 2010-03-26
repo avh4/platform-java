@@ -8,9 +8,24 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class Platform {
+public class Platform implements Runnable {
+
+    private final Date mockDate;
+
+    protected Platform(Date time) {
+        mockDate = time;
+    }
+
+    public Platform() {
+        this(null);
+    }
 
     public static void main(String[] args) {
+        new Platform().run();
+    }
+
+    @Override
+    public void run() {
         for (String url : getEmailReviewUrls().split("\n")) {
             browseUrl(url);
         }
@@ -26,14 +41,12 @@ public class Platform {
         }
     }
 
-    private static Date mockDate = null;
-
-    public static String getEmailReviewUrls() {
+    public String getEmailReviewUrls() {
         return createGmailLink(0) + createGmailLink(-1) + createGmailLink(-2) + createGmailLink(-3)
                 + createGmailLink(-4);
     }
 
-    private static String createGmailLink(int year_offset) {
+    private String createGmailLink(int year_offset) {
         GregorianCalendar now = new GregorianCalendar();
         now.setTime(getDate());
         int end_date = now.get(GregorianCalendar.DAY_OF_MONTH);
@@ -45,14 +58,11 @@ public class Platform {
                 + "+label%3AInbox+OR+label%3Aotherinbox\n";
     }
 
-    private static Date getDate() {
+    private Date getDate() {
         if (mockDate != null) {
             return mockDate;
         }
         return new Date();
     }
 
-    public static void mockTime(Date date) {
-        mockDate = date;
-    }
 }
