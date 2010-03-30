@@ -1,3 +1,9 @@
+Narrative: Review emails for today (N1)
+
+As a medium-volume email user
+I want to process emails from my backlog every day
+In order to keep my inbox empty 
+
 Scenario: March 25th
 	Given today is 2010-03-25
 	When I run Platform
